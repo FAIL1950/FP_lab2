@@ -1,10 +1,10 @@
 (defun merge-lists-spinning-pairs (list1 list2)
-  (unless (and (null list1) (null list2))
+  (when (or list1 list2)
       (let ((x (cond
-                 ((null list1) (list (list (car list2))))
-                 ((null list2) (list (list (car list1))))
-                 (t (list (list (car list1) (car list2)))))))
-        (append x (merge-lists-spinning-pairs (cdr list2) (cdr list1))))))
+                 ((null list1) (list (car list2)))
+                 ((null list2) (list (car list1)))
+                 (t (list (car list1) (car list2))))))
+        (cons x (merge-lists-spinning-pairs (cdr list2) (cdr list1))))))
 
 (defun is-in-list (elem lst)
   (cond
@@ -15,9 +15,9 @@
 
 
 (defun list-set-intersect-p (list1 list2)
-  (cond
-    ((null list1) nil)
-    (t (if (is-in-list (car list1) list2) t (list-set-intersect-p (cdr list1) list2)))))
+  (when list1
+    (if (is-in-list (car list1) list2) t (list-set-intersect-p (cdr list1) list2))
+    ))
 
 
 (defun check-function (name func args expected)
